@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding=utf8
 
 import numpy as np
@@ -37,8 +37,8 @@ class ImageEstimation():
         self.camera_distortion_param = np.array([-0.426801, 0.249082, -0.002705, -0.001600, 0.000000])
 
         # Initiate SIFT detector
-        self.sift = cv2.xfeatures2d.SIFT_create()
-
+        
+        self.sift = cv2.SIFT_create() 
         if self.use_image:
             print("get image: ", _image_path)
             self.img_object = cv2.imread(_image_path,0)          # queryImage
@@ -273,14 +273,14 @@ class ImageEstimation():
         font = cv2.FONT_HERSHEY_SIMPLEX
 
         cv2.putText(frame, 'position(cm)', (10, 30), font, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
-        cv2.putText(frame, 'x:' + str(round(translation[0], 2)), (250, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, 'y:' + str(round(translation[1], 2)), (350, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, 'z:' + str(round(translation[2], 2)), (450, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'x:' + str(np.round(translation[0], 2)), (250, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'y:' + str(np.round(translation[1], 2)), (350, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'z:' + str(np.round(translation[2], 2)), (450, 30), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
 
         cv2.putText(frame, 'orientation(degree)', (10, 60), font, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
-        cv2.putText(frame, 'x:' + str(round(rotation[0], 2)), (250, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, 'y:' + str(round(rotation[1], 2)), (350, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
-        cv2.putText(frame, 'z:' + str(round(rotation[2], 2)), (450, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'x:' + str(np.round(rotation[0], 2)), (250, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'y:' + str(np.round(rotation[1], 2)), (350, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, 'z:' + str(np.round(rotation[2], 2)), (450, 60), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)
         cv2.putText(frame, 'Find matches: ', (10, 90), font, 0.7, (0, 255, 0), 1, cv2.LINE_AA)
 
         cv2.putText(frame, "%s/%s" % (len(self.matches), self.MIN_MATCH_COUNT), (250, 90), font, 0.7, (0, 0, 255), 2, cv2.LINE_AA)

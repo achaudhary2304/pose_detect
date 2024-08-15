@@ -1,8 +1,9 @@
-#!/usr/bin/env python
-# coding=utf8
+#!/usr/bin/env python3
+
 
 import os.path
 import cv2
+import numpy as np
 
 import rospy
 from cv_bridge import CvBridge, CvBridgeError
@@ -18,7 +19,7 @@ bridge = CvBridge()
 cv_image = Image()
 
 topic_tf_child = "/object"
-topic_tf_perent = "/base_link"
+topic_tf_perent = "/chassis"
 
 t = TransformStamped()
 tf2_br = tf2_ros.TransformBroadcaster()
@@ -77,8 +78,8 @@ def camera_info_clb(data):
         for k in range(3):
             image_proc.camera_parameters[i][k] = data.K[i+k]
             t+=1
-    for i in range(5):
-        image_proc.camera_distortion_param[i] = data.D[i]
+    image_proc.camera_distortion_param = np.zeros(5) 
+    
     camera_info_sub.unregister()
     print("get camera params")
 
@@ -92,16 +93,16 @@ if __name__ == '__main__':
     _rate = 10.                 # this is a voracious application, so I recommend to lower the frequency, if it is not critical
 
     MIN_MATCH_COUNT = 10        # the lower the value, the more sensitive the filter
-    blur_threshold = 300        # the higher the value, the more sensitive the filter
+    blur_threshold = 20        # the higher the value, the more sensitive the filter
     max_dist = 10.              # publish objects that are no further than the specified value
 
-    size_image = 2.             # the width of the image in meters
+    size_image = .5            # the width of the image in meters
 
-    use_image = False           # uses a known image
-    image_path = "image.jpg"    # path to known image
+    use_image = True           # uses a known image
+    image_path = "/home/aryan/catkin_ws/src/image_pose_estimation/src/stop.jpeg"    # path to known image
 
     show_image = True           # show image in window
-    camera_name = "camera"      # the name of the camera in ROS
+    camera_name = "kinect/rgb"      # the name of the camera in ROS
 
 
     # init params
@@ -137,7 +138,7 @@ if __name__ == '__main__':
     # init params
     get_image_flag = False
 
-    image_proc = image_processing.ImageEstimation(MIN_MATCH_COUNT, 300, use_image, size_image, image_path, show_image)
+    image_proc = image_processing.ImageEstimation(MIN_MATCH_COUNT, 20, use_image, size_image, image_path, show_image)
     image_proc.max_dist = max_dist
 
     rate = rospy.Rate(_rate)
